@@ -94,7 +94,7 @@ const useStyles = makeStyles({
   }
 });
 
-const Room = (props) => {
+function Room(props){
   const classes = useStyles();
 
   const [peers, setPeers] = useState([]);
@@ -111,7 +111,7 @@ const Room = (props) => {
 
   const userStream = useRef();
 
-  const roomId = props.match.params.roomId;
+  const roomID = props.match.params.roomID;
   const currentUser = sessionStorage.getItem('user');
 
   useEffect(() => {
@@ -126,7 +126,7 @@ const Room = (props) => {
         userVideoRef.current.srcObject = stream;
         userStream.current = stream;
 
-        socket.emit('joinRoom', { roomId, userName: currentUser });
+        socket.emit('joinRoom', { roomID, userName: currentUser });
         socket.on('userJoin', ({clients, socketList}) => {
           const peer_array = [];
 
@@ -369,12 +369,12 @@ const Room = (props) => {
     e.preventDefault();
     setVideo(false)
     setLeave(true)
-    socket.emit('leaveRoom', { roomId });
+    socket.emit('leaveRoom', { roomID });
   };
 
   const endCall = (e) => {
     e.preventDefault();
-    socket.emit('finish', {roomId})
+    socket.emit('finish', {roomID})
     sessionStorage.removeItem('user');
     window.location.href = '/'
   }
@@ -409,13 +409,13 @@ const Room = (props) => {
       };
     });
 
-    socket.emit('toggle', { roomId, switchTarget: target });
+    socket.emit('toggle', { roomID, switchTarget: target });
   };
 
 
   return (
     <div className={classes.root}>
-    <Heading meeting={true} room={roomId} />
+    <Heading meeting={true} room={roomID} />
     <div>
       <Grid container spacing={2}>
         <Grid item xs={6} sm={1}>
@@ -460,7 +460,7 @@ const Room = (props) => {
           </div>
         </Grid>
         <Grid item xs={6} sm={3}>
-        <ChatOption roomId={roomId} />
+        <ChatOption roomID={roomID} />
         </Grid>
       </Grid>
     </div>

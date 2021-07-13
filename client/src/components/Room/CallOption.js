@@ -48,15 +48,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 function CallOption(props) {
   const classes = useStyles();
-//   const [mic, setMic] = React.useState(true);
-//   const [video, setVideo] = React.useState(true);
-//   function changeMic() {
-//     setMic(!mic);
-//   }
-//   function changeVideo() {
-//     setVideo(!video);
-//   }
-
   return (
     <div>
       <Typography variant="h6" className={classes.date}>

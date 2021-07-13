@@ -84,8 +84,8 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const ChatOption = ({ roomId }) => {
-  const roomID = roomId;
+function ChatOption(props){
+  const roomID = props.roomID;
   const currentUser = sessionStorage.getItem('user')
   const [msg, setMsg] = useState([])
   

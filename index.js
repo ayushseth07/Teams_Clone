@@ -21,18 +21,18 @@ io.on('connection', (socket) => {
     socket.disconnect();
   });
 
-  socket.on('checkUser', ({ roomId, userName }) => {
-    io.sockets.in(roomId).clients((err, clients) => {
+  socket.on('checkUser', ({ roomID, userName }) => {
+    io.sockets.in(roomID).clients((err, clients) => {
       socket.emit('errorUserExists', {clients, userName, socketList});
     });
   });
 
-  socket.on('joinRoom', ({ roomId, userName }) => {
-    socket.join(roomId);
+  socket.on('joinRoom', ({ roomID, userName }) => {
+    socket.join(roomID);
     socketList[socket.id] = { userName, video: true, audio: true };
 
-    io.sockets.in(roomId).clients((err, clients) => {
-        socket.broadcast.to(roomId).emit('userJoin', {clients, socketList});
+    io.sockets.in(roomID).clients((err, clients) => {
+        socket.broadcast.to(roomID).emit('userJoin', {clients, socketList});
     });
   });
 
@@ -48,22 +48,22 @@ io.on('connection', (socket) => {
     io.sockets.in(roomID).emit('receiveMessage', { msg, sender });
   });
 
-  socket.on('leaveRoom', ({ roomId }) => {
-    socket.broadcast.to(roomId).emit('userLeave', { userId: socket.id });
+  socket.on('leaveRoom', ({ roomID }) => {
+    socket.broadcast.to(roomID).emit('userLeave', { userId: socket.id });
   });
 
-  socket.on('finish',({roomId}) => {
+  socket.on('finish',({roomID}) => {
     delete socketList[socket.id];
-    io.sockets.sockets[socket.id].leave(roomId);
+    io.sockets.sockets[socket.id].leave(roomID);
   })
 
-  socket.on('toggle', ({ roomId, switchTarget }) => {
+  socket.on('toggle', ({ roomID, switchTarget }) => {
     if (switchTarget === 'video') {
       socketList[socket.id].video = !socketList[socket.id].video;
     } else {
       socketList[socket.id].audio = !socketList[socket.id].audio;
     }
-    socket.broadcast.to(roomId).emit('toggleVideo', { userId: socket.id, switchTarget });
+    socket.broadcast.to(roomID).emit('toggleVideo', { userId: socket.id, switchTarget });
   });
 });
 
